@@ -1,0 +1,32 @@
+#APP ----------------------------------------------------------------------------------------------
+version: '1.0'
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+    links:
+      - mongo
+    ports:
+      - "8095:8095"
+    depends_on:
+      - mongo
+
+#MONGO ----------------------------------------------------------------------------------------------
+  mongo:
+    image: mongo
+    container_name: mongo-db
+    ports:
+      - '27018:27017'
+    restart: always
+    logging:
+      options:
+        max-size: 1g
+    environment:
+      - MONGODB_HOST=$${spring.data.mongodb.host}
+      - MONGODB_PORT=$${spring.data.mongodb.port}
+      - MONGODB_DATABASE=$${spring.data.mongodb.database}
+      - MONGODB_USERNAME=$${spring.data.mongodb.username}
+      - MONGODB_PASSWORD=$${spring.data.mongodb.password}
+
+
